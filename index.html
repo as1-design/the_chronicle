@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>The Chronicle</title>
+<meta name="theme-color" content="#0E201D">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Karla:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pond:#0E201D; --pond2:#16302B; --pond3:#1E403A;
+  --paper:#F2EDE0; --paper-dim:#BFC9BF; --rule:rgba(242,237,224,.14);
+  --friendships:#8FB89B; --dating:#E0796E; --reading:#A493D1; --housework:#EBB54D;
+  --accent:var(--friendships);
+  --ease-spring:cubic-bezier(.34,1.56,.64,1); --ease-out:cubic-bezier(.25,.46,.45,.94);
+  --s1:6px; --s2:12px; --s3:20px; --s4:32px; --s5:52px; --s6:84px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--pond);color:var(--paper);font-family:'Karla',sans-serif;min-height:100vh;overflow-x:hidden;position:relative}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:radial-gradient(rgba(242,237,224,.35) 1px,transparent 1px);background-size:22px 22px;opacity:.05}
+.orb{position:fixed;top:-260px;left:50%;transform:translateX(-50%);width:640px;height:640px;border-radius:50%;pointer-events:none;z-index:0;
+  background:radial-gradient(circle at 50% 55%,rgba(235,181,77,.42),rgba(235,181,77,.13) 42%,transparent 68%);animation:breathe 9s var(--ease-out) infinite}
+@keyframes breathe{0%,100%{transform:translateX(-50%) scale(1);opacity:.9}50%{transform:translateX(-50%) scale(1.09);opacity:1}}
+.wrap{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:var(--s5) var(--s3) var(--s6)}
+
+.masthead{position:relative;text-align:center;margin-bottom:var(--s5)}
+.weekmark{position:absolute;top:-46px;left:50%;transform:translateX(-50%);font-family:'Fraunces',serif;font-size:14rem;line-height:.8;font-weight:300;color:var(--paper);opacity:.07;pointer-events:none;user-select:none;letter-spacing:-.04em}
+.eyebrow{font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);margin-bottom:var(--s2);transition:color .6s ease}
+h1{font-family:'Fraunces',serif;font-weight:400;font-size:clamp(2.6rem,8vw,4.4rem);line-height:.95;letter-spacing:-.03em;font-variation-settings:'SOFT' 40,'WONK' 1}
+h1 em{font-style:italic;color:var(--accent);transition:color .6s ease}
+.tagline{color:var(--paper-dim);margin-top:var(--s2);font-size:.98rem}
+.topbtns{position:absolute;top:0;right:0;display:flex;gap:8px;z-index:2}
+.gear{position:relative;background:transparent;border:1.5px solid var(--rule);color:var(--paper-dim);width:40px;height:40px;border-radius:11px;cursor:pointer;font-size:1.05rem;transition:transform .18s var(--ease-spring),color .2s}
+.gear:hover{transform:translateY(-2px) rotate(35deg);color:var(--paper)}
+#syncBtn:hover{transform:translateY(-2px);color:var(--paper)}
+#syncBtn.on{color:var(--accent);border-color:var(--accent)}
+#syncBtn.busy{animation:pulse 1.1s ease-in-out infinite}
+
+
+.status{background:var(--pond2);border:1px solid var(--rule);border-radius:18px;padding:var(--s3);margin:var(--s4) 0;box-shadow:0 6px 24px rgba(0,0,0,.25)}
+.status-top{display:flex;justify-content:space-between;align-items:baseline;gap:var(--s2);flex-wrap:wrap;margin-bottom:var(--s3)}
+.level-name{font-family:'Fraunces',serif;font-size:1.5rem;font-style:italic}
+.level-xp{font-family:'Space Mono',monospace;font-size:.8rem;color:var(--paper-dim)}
+.tracks{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--s2)}
+.track{background:var(--pond);border-radius:12px;padding:10px 12px;border-left:4px solid var(--tc)}
+.track-lab{display:flex;justify-content:space-between;gap:8px;font-family:'Space Mono',monospace;font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--paper-dim);margin-bottom:7px}
+.track-lab b{color:var(--tc);font-weight:700}
+.bar{height:5px;background:rgba(242,237,224,.1);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--tc);width:0;border-radius:3px;transition:width .9s var(--ease-out)}
+
+.sec{margin-top:var(--s5)}
+.sec-head{display:flex;align-items:center;gap:var(--s2);margin-bottom:var(--s3)}
+.sec-head h2{font-family:'Fraunces',serif;font-weight:400;font-size:1.35rem;white-space:nowrap}
+.sec-head .line{flex:1;height:1px;background:var(--rule)}
+.sec-head .count{font-family:'Space Mono',monospace;font-size:.72rem;color:var(--paper-dim);text-align:right}
+
+.panel{background:var(--pond2);border:1px solid var(--rule);border-radius:18px;padding:var(--s3)}
+.sliders{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:var(--s3) var(--s4)}
+.slider-row label{display:flex;justify-content:space-between;font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;color:var(--paper-dim)}
+.slider-row label b{color:var(--sc)}
+input[type=range]{width:100%;-webkit-appearance:none;background:transparent;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:5px;background:rgba(242,237,224,.13);border-radius:3px}
+input[type=range]::-moz-range-track{height:5px;background:rgba(242,237,224,.13);border-radius:3px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--sc);margin-top:-6.5px;border:none;transition:transform .18s var(--ease-spring)}
+input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--sc);border:none}
+input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.25)}
+.focus-pick{margin-top:var(--s4)}
+.focus-pick>span.lab{font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--paper-dim);display:block;margin-bottom:10px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font-family:'Karla',sans-serif;font-size:.85rem;padding:8px 16px;border-radius:999px;background:transparent;color:var(--paper-dim);border:1.5px solid var(--rule);cursor:pointer;transition:transform .18s var(--ease-spring),background .2s,color .2s,border-color .2s}
+.chip:hover{transform:translateY(-2px)}
+.chip:active{transform:scale(.96)}
+.chip.on{background:var(--cc);color:var(--pond);border-color:var(--cc);font-weight:700}
+.focus-effect{margin-top:14px;font-size:.86rem;line-height:1.6;color:var(--paper-dim)}
+.focus-effect b{color:var(--paper)}
+
+.btn{font-family:'Karla',sans-serif;font-weight:700;font-size:.92rem;padding:13px 26px;border-radius:12px;border:none;cursor:pointer;background:var(--accent);color:var(--pond);transition:transform .16s var(--ease-spring),box-shadow .2s,background .6s ease;box-shadow:0 6px 20px rgba(0,0,0,.28)}
+.btn:hover{transform:translateY(-3px)}
+.btn:active{transform:scale(.96)}
+.btn.ghost{background:transparent;color:var(--paper-dim);border:1.5px solid var(--rule);box-shadow:none}
+.btn.ghost:hover{color:var(--paper);border-color:var(--paper-dim)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn-row{display:flex;gap:var(--s2);flex-wrap:wrap;margin-top:var(--s4)}
+.mini{font-size:.78rem;padding:8px 14px;border-radius:9px}
+
+.hand{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:var(--s3)}
+.card{position:relative;background:var(--pond2);border:1px solid var(--rule);border-top:5px solid var(--dc);border-radius:16px;padding:var(--s3);display:flex;flex-direction:column;gap:10px;min-height:210px;opacity:0;transform:translateY(22px);box-shadow:0 4px 16px rgba(0,0,0,.3);transition:transform .28s var(--ease-spring),box-shadow .28s}
+.card.in{animation:deal .55s var(--ease-spring) forwards}
+@keyframes deal{to{opacity:1;transform:translateY(0) rotate(var(--tilt))}}
+.card:hover{transform:translateY(-6px) rotate(0deg);box-shadow:0 18px 40px rgba(0,0,0,.4),0 0 0 1px var(--dc)}
+.card-suit{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--dc)}
+.card-title{font-family:'Fraunces',serif;font-size:1.28rem;line-height:1.15;font-variation-settings:'SOFT' 30}
+.card-body{font-size:.88rem;line-height:1.5;color:var(--paper-dim);flex:1}
+.card-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:4px}
+.card-xp{font-family:'Space Mono',monospace;font-size:.72rem;color:var(--dc)}
+.boost{display:inline-block;background:var(--dc);color:var(--pond);font-family:'Space Mono',monospace;font-size:.62rem;font-weight:700;padding:2px 6px;border-radius:5px;margin-right:5px}
+.card-acts{display:flex;gap:6px}
+.drop{background:transparent;border:1px solid var(--rule);color:var(--paper-dim);cursor:pointer;border-radius:9px;padding:8px 11px;font-size:.78rem;font-family:'Karla',sans-serif;transition:transform .16s var(--ease-spring),color .2s}
+.drop:hover{transform:translateY(-2px);color:var(--paper)}
+.mine{position:absolute;top:12px;right:12px;font-size:.62rem;font-family:'Space Mono',monospace;color:var(--dc);opacity:.75}
+
+.empty{text-align:center;padding:var(--s5) var(--s3);border:1.5px dashed var(--rule);border-radius:18px}
+.empty .glyph{font-size:3.4rem;display:block;margin-bottom:var(--s2);animation:breathe 6s ease-in-out infinite}
+.empty p{color:var(--paper-dim);font-family:'Fraunces',serif;font-style:italic;font-size:1.05rem}
+
+.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:var(--s2)}
+.keep{background:linear-gradient(160deg,var(--pond3),var(--pond2));border:1px solid var(--rule);border-left:4px solid var(--kc);border-radius:13px;padding:14px 16px;transition:transform .2s var(--ease-spring),box-shadow .2s;animation:pop .5s var(--ease-spring)}
+@keyframes pop{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+.keep:hover{transform:translateY(-4px) scale(1.02);box-shadow:0 12px 28px rgba(0,0,0,.35)}
+.keep h4{font-family:'Fraunces',serif;font-weight:500;font-size:1rem;margin-bottom:4px}
+.keep .qq{font-family:'Space Mono',monospace;font-size:.58rem;color:var(--paper-dim);opacity:.75;margin-bottom:7px;display:block}
+.keep p{font-size:.86rem;line-height:1.45;color:var(--paper);font-style:italic;font-family:'Fraunces',serif}
+.keep .stamp{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.13em;text-transform:uppercase;color:var(--kc);margin-top:9px;display:block}
+
+.chapter{background:var(--paper);color:#22322C;border-radius:6px;padding:var(--s5) var(--s4);margin-top:var(--s3);box-shadow:0 22px 60px rgba(0,0,0,.45);position:relative;overflow:hidden;animation:unfurl .8s var(--ease-out)}
+@keyframes unfurl{from{opacity:0;transform:translateY(26px) scale(.985)}to{opacity:1;transform:none}}
+.chapter::after{content:'';position:absolute;left:0;right:0;top:0;height:5px;background:var(--accent)}
+.chapter.fragment{padding:var(--s4);background:#E7E1D2;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.chapter.fragment .ch-text{font-size:1.02rem;font-style:italic}
+.chapter.fragment .ch-text p:first-child:first-letter{font-size:1em;float:none;padding:0}
+.ch-num{font-family:'Space Mono',monospace;font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:#7C8A7E;margin-bottom:var(--s3);display:block}
+.ch-text{font-family:'Fraunces',serif;font-size:1.16rem;line-height:1.85;font-weight:300;font-variation-settings:'SOFT' 50}
+.ch-text p{margin-bottom:1.15em}
+.ch-text p:last-child{margin-bottom:0}
+.chapter .ch-text p:first-child:first-letter{font-size:2.6em;float:left;line-height:.82;padding:6px 10px 0 0;font-weight:400}
+.ch-text.editing{outline:2px dashed rgba(34,50,44,.3);outline-offset:14px;border-radius:4px}
+.ch-text.editing p:first-child:first-letter{font-size:1em;float:none;padding:0}
+.ch-note{margin-top:var(--s4);padding-left:var(--s3);border-left:4px solid var(--accent);transition:border-color .6s ease}
+.ch-note-lab{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:#7C8A7E;display:block;margin-bottom:8px}
+.ch-note p{font-family:'Karla',sans-serif;font-size:.98rem;line-height:1.65;color:#3A4A42}
+.ch-note-editor{margin-top:var(--s3)}
+.ch-note-editor textarea{background:rgba(34,50,44,.05);border:1px solid rgba(34,50,44,.18);color:#22322C;font-family:'Karla',sans-serif;font-size:.95rem;min-height:78px}
+.ch-note-editor textarea::placeholder{color:rgba(34,50,44,.4)}
+.ch-note-acts{display:flex;gap:8px;margin-top:10px}
+.ch-foot{margin-top:var(--s4);padding-top:var(--s3);border-top:1px solid rgba(34,50,44,.14);display:flex;justify-content:space-between;align-items:center;gap:var(--s2);flex-wrap:wrap}
+.ch-foot>span{font-family:'Space Mono',monospace;font-size:.62rem;color:#7C8A7E;letter-spacing:.1em}
+.ch-acts{display:flex;gap:8px;flex-wrap:wrap}
+.inkbtn{background:transparent;border:1px solid rgba(34,50,44,.22);color:#5C6B60;font-family:'Karla',sans-serif;font-size:.76rem;padding:7px 13px;border-radius:8px;cursor:pointer;transition:transform .16s var(--ease-spring)}
+.inkbtn:hover{transform:translateY(-2px);border-color:#22322C}
+
+.thinking{text-align:center;padding:var(--s5) var(--s3)}
+.thinking p{font-family:'Fraunces',serif;font-style:italic;color:var(--paper-dim);font-size:1.05rem;animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+
+.nudge{margin-top:var(--s3);background:var(--pond2);border:1px solid var(--rule);border-left:4px solid var(--accent);border-radius:14px;padding:var(--s3)}
+.nudge h3{font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:6px}
+.nudge p{color:var(--paper-dim);font-size:.88rem;line-height:1.55}
+.composer{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:var(--s3)}
+.composer .full{grid-column:1/-1}
+.composer input,.composer select,.composer textarea{width:100%;background:var(--pond);border:1px solid var(--rule);border-radius:10px;color:var(--paper);font-family:'Karla',sans-serif;font-size:.9rem;padding:11px 12px;outline:none}
+.composer textarea{min-height:62px;resize:vertical;font-family:'Fraunces',serif}
+.composer input:focus,.composer select:focus,.composer textarea:focus{border-color:var(--accent)}
+.composer label{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--paper-dim);display:block;margin-bottom:5px}
+@media(max-width:520px){.composer{grid-template-columns:1fr}}
+
+.scrim{position:fixed;inset:0;background:rgba(6,16,14,.82);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:var(--s3);z-index:50;overflow-y:auto}
+.scrim.open{display:flex;animation:fade .25s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.modal{background:var(--pond2);border:1px solid var(--rule);border-top:5px solid var(--mc,var(--accent));border-radius:20px;padding:var(--s4);max-width:490px;width:100%;box-shadow:0 30px 80px rgba(0,0,0,.6);animation:rise .45s var(--ease-spring);margin:auto}
+@keyframes rise{from{opacity:0;transform:translateY(30px) scale(.95)}to{opacity:1;transform:none}}
+.modal h3{font-family:'Fraunces',serif;font-weight:400;font-size:1.6rem;margin-bottom:8px}
+.modal .prompt{color:var(--accent);font-family:'Fraunces',serif;font-style:italic;font-size:1.05rem;margin-bottom:var(--s3);line-height:1.5}
+textarea{width:100%;background:var(--pond);border:1px solid var(--rule);border-radius:12px;color:var(--paper);font-family:'Fraunces',serif;font-size:1.02rem;line-height:1.6;padding:14px;resize:vertical;min-height:96px;outline:none;transition:border-color .2s}
+textarea:focus{border-color:var(--mc,var(--accent))}
+textarea::placeholder{color:rgba(191,201,191,.45);font-style:italic}
+.counter{font-family:'Space Mono',monospace;font-size:.64rem;color:var(--paper-dim);text-align:right;margin-top:6px}
+
+.setrow{padding:var(--s3) 0;border-bottom:1px solid var(--rule)}
+.setrow:last-child{border-bottom:none}
+.setrow h4{font-family:'Fraunces',serif;font-weight:500;font-size:1.05rem;margin-bottom:5px}
+.setrow p{color:var(--paper-dim);font-size:.82rem;line-height:1.55;margin-bottom:10px}
+.setrow textarea{min-height:150px;font-size:.98rem}
+.setrow input[type=text],.setrow input[type=password]{width:100%;background:var(--pond);border:1px solid var(--rule);border-radius:10px;color:var(--paper);font-family:'Space Mono',monospace;font-size:.8rem;padding:11px 12px;outline:none;margin-bottom:10px}
+.setacts{display:flex;gap:8px;flex-wrap:wrap}
+
+.banner{background:var(--pond3);border:1px solid var(--rule);border-left:4px solid var(--accent);border-radius:13px;padding:var(--s3);margin-bottom:var(--s3);display:flex;justify-content:space-between;align-items:center;gap:var(--s2);flex-wrap:wrap;animation:pop .5s var(--ease-spring)}
+.banner p{font-family:'Fraunces',serif;font-style:italic;font-size:1rem}
+
+.toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,110px);background:var(--pond3);border:1px solid var(--rule);color:var(--paper);padding:13px 22px;border-radius:12px;font-size:.9rem;z-index:80;box-shadow:0 14px 34px rgba(0,0,0,.45);transition:transform .42s var(--ease-spring);max-width:calc(100vw - 40px);text-align:center}
+.toast.show{transform:translate(-50%,0)}
+.note{font-size:.82rem;color:var(--paper-dim);line-height:1.55;margin-top:var(--s2)}
+.hide{display:none!important}
+:focus-visible{outline:2.5px solid var(--accent);outline-offset:3px;border-radius:4px}
+@media(max-width:560px){.weekmark{font-size:8rem;top:-24px}.chapter{padding:var(--s4) var(--s3)}.wrap{padding-top:var(--s4)}.topbtns{position:static;justify-content:center;margin-bottom:var(--s3)}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}.card{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="orb" aria-hidden="true"></div>
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="topbtns"><button class="gear" id="syncBtn" title="Sync" aria-label="Sync">☁</button><button class="gear" id="gearBtn" title="Settings" aria-label="Settings">⚙</button></div>
+    <div class="weekmark" id="weekmark" aria-hidden="true">01</div>
+    <div class="eyebrow" id="eyebrow">Chapter One</div>
+    <h1>The <em>Chronicle</em></h1>
+    <p class="tagline">A week is dealt to you. What you do with it becomes the story.</p>
+  </header>
+
+  <div id="banners"></div>
+
+  <section class="status">
+    <div class="status-top">
+      <div class="level-name" id="levelName">Still Water</div>
+      <div class="level-xp" id="levelXp">0 XP</div>
+    </div>
+    <div class="tracks" id="tracks"></div>
+  </section>
+
+  <section class="sec" id="buildSec">
+    <div class="sec-head"><h2>Build the week</h2><div class="line"></div><span class="count" id="deckSize"></span></div>
+    <div class="panel">
+      <div class="sliders" id="sliders"></div>
+      <div class="focus-pick">
+        <p class="focus-effect" id="focusEffect"></p>
+      </div>
+      <div class="btn-row"><button class="btn" id="dealBtn">Deal the week</button></div>
+      <p class="note" id="buildNote">Nothing decays while you are away. Come back in three weeks and the deck is still here.</p>
+    </div>
+  </section>
+
+  <section class="sec hide" id="handSec">
+    <div class="sec-head"><h2>Your hand</h2><div class="line"></div><span class="count" id="poolCount"></span></div>
+    <div class="hand" id="hand"></div>
+    <div class="btn-row">
+      <button class="btn" id="closeBtn">Close the week</button>
+      <button class="btn ghost" id="addCardBtn">Write a card</button>
+    </div>
+  </section>
+
+  <section class="sec hide" id="keepSec">
+    <div class="sec-head"><h2>Keepsakes</h2><div class="line"></div><span class="count" id="keepCount"></span></div>
+    <div class="shelf" id="shelf"></div>
+  </section>
+
+  <section class="sec hide" id="chapSec">
+    <div class="sec-head"><h2>The record</h2><div class="line"></div><span class="count" id="chapCount"></span></div>
+    <div id="nudgeSlot"></div>
+    <div id="chapters"></div>
+  </section>
+</div>
+
+<div class="scrim" id="scrim"><div class="modal" id="modal">
+  <h3 id="mTitle"></h3>
+  <p class="prompt" id="mPrompt"></p>
+  <textarea id="mLine" maxlength="280" placeholder="In your own words."></textarea>
+  <div class="counter"><span id="mCount">0</span>/280</div>
+  <div class="btn-row"><button class="btn" id="mSave">Keep it</button><button class="btn ghost" id="mCancel">Not yet</button></div>
+</div></div>
+
+<div class="scrim" id="setScrim"><div class="modal" style="max-width:560px">
+  <h3>Settings</h3>
+  <div class="setrow">
+    <h4>Your record</h4>
+    <p>Everything: weeks, keepsakes, chapters, your own cards. Export before you change device, and after any week that mattered.</p>
+    <div class="setacts">
+      <button class="btn mini" id="expBtn">Export a copy</button>
+      <button class="btn ghost mini" id="impBtn">Import a copy</button>
+      <input type="file" id="impFile" accept="application/json" class="hide">
+    </div>
+  </div>
+  <div class="setrow">
+    <h4>The chapters, as reading</h4>
+    <p>Every chapter and every keepsake as one Markdown file. This is the version you print, or paste into a document, or read in December.</p>
+    <div class="setacts"><button class="btn mini" id="mdBtn">Export the chapters</button></div>
+  </div>
+  <div class="setrow">
+    <h4>Memory across devices</h4>
+    <p>One GitHub token with the <b>gist</b> scope. Paste it once here and once on your phone — the app finds its own secret gist by name, so there is nothing else to copy across. After that it pulls when you open it and saves as you play.</p>
+    <p><a href="https://github.com/settings/tokens/new?scopes=gist&amp;description=the-chronicle" target="_blank" rel="noopener" style="color:var(--accent)">Create a token &rarr;</a> Tick nothing but <b>gist</b>. The token stays on this device and never goes into your exports.</p>
+    <input type="password" id="ghToken" placeholder="ghp_..." autocomplete="off" spellcheck="false">
+    <div class="setacts">
+      <button class="btn mini" id="connectBtn">Connect and sync</button>
+      <button class="btn ghost mini" id="syncNowBtn">Sync now</button>
+      <button class="btn ghost mini" id="disconnectBtn">Disconnect</button>
+    </div>
+    <p id="syncStatus" style="margin-top:12px;margin-bottom:0"></p>
+  </div>
+  <div class="setrow">
+    <h4>Sunday reminder</h4>
+    <p>A single nudge on Sundays, shown when you open the app. If you allow notifications it can also arrive on the day, though only while your phone has the page in memory.</p>
+    <div class="setacts"><button class="btn ghost mini" id="notifBtn">Allow notifications</button></div>
+  </div>
+  <div class="setrow">
+    <h4>Start over</h4>
+    <p>Clears everything on this device. Export first.</p>
+    <div class="setacts"><button class="btn ghost mini" id="resetBtn">Clear the record</button></div>
+  </div>
+  <div class="btn-row"><button class="btn" id="setClose">Done</button></div>
+</div></div>
+
+<div class="scrim" id="cardScrim"><div class="modal" style="max-width:560px">
+  <h3>Write a card</h3>
+  <p class="prompt" id="cardIntro">The deck only grows if you grow it.</p>
+  <div class="composer">
+    <div><label for="cD">Area</label><select id="cD"></select></div>
+    <div><label for="cS">Suit</label><input type="text" id="cS" placeholder="Courage, Memory, Care..."></div>
+    <div class="full"><label for="cT">Title</label><input type="text" id="cT" placeholder="Short. Four words or fewer."></div>
+    <div class="full"><label for="cB">The card</label><textarea id="cB" placeholder="What you are asking yourself to do."></textarea></div>
+    <div class="full"><label for="cQ">The question it asks afterwards</label><input type="text" id="cQ" placeholder="Ask for something physical and specific."></div>
+    <div><label for="cX">XP</label><input type="text" id="cX" value="20" inputmode="numeric"></div>
+  </div>
+  <div class="btn-row"><button class="btn" id="cSave">Add to the deck</button><button class="btn ghost" id="cCancel">Cancel</button></div>
+</div></div>
+
+<div class="scrim" id="closeScrim"><div class="modal" style="max-width:580px">
+  <h3>Close the week</h3>
+  <p class="prompt" id="closeSummary"></p>
+  <div class="setrow">
+    <h4>Send it to Claude</h4>
+    <p>Copies the whole week — the rules, this week&rsquo;s form, your last chapters so it does not repeat itself, and every line you wrote. Paste it into a conversation and argue with the chapter until it is right.</p>
+    <div class="setacts"><button class="btn mini" id="copyWeekBtn">Copy the week</button></div>
+  </div>
+  <div class="setrow">
+    <h4>Paste the chapter</h4>
+    <textarea id="pasteBox" placeholder="Paste what the chronicler wrote."></textarea>
+    <div class="setacts" style="margin-top:10px"><button class="btn mini" id="pasteSaveBtn">Save the chapter</button>
+    <button class="btn ghost mini" id="closeCancel">Not yet</button></div>
+  </div>
+</div></div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══ DOMAINS ═══════════════════════════════
+const DOMAINS = {
+  friendships:{label:"Friendships", colour:"#8FB89B", glyph:"🌿"},
+  dating:     {label:"Dating",      colour:"#E0796E", glyph:"🔥"},
+  reading:    {label:"Reading & Learning", colour:"#A493D1", glyph:"📖"},
+  housework:  {label:"Housework",   colour:"#EBB54D", glyph:"🕯"}
+};
+const DKEYS = Object.keys(DOMAINS);
+
+// Fallback deck — a full copy, so the app is never degraded when cards.json cannot be read.
+const EMBEDDED = [
+  {d:"friendships",s:"Initiation",t:"Text first, no reason",b:"Message someone with no agenda attached. Not a plan, not a favour. Just contact.",q:"Who, and what did you send?",xp:10},
+  {d:"friendships",s:"Initiation",t:"Propose a real plan",b:"Not we should catch up. A day, a place, a time, sent to one person.",q:"What did you propose, and what came back?",xp:20},
+  {d:"friendships",s:"Deepening",t:"The second question",b:"When someone answers, ask the one underneath it. Stay for the answer.",q:"What was the question underneath?",xp:15},
+  {d:"friendships",s:"Deepening",t:"Say it out loud",b:"Tell someone plainly what you value in them. No hedging, no joke at the end.",q:"What did you tell them? Their words back, if you have them.",xp:25},
+  {d:"friendships",s:"In the moment",t:"Let the silence sit",b:"Once today, do not rush to fill a pause. See what arrives in it.",q:"What arrived in the pause?",xp:10},
+  {d:"friendships",s:"Presence",t:"Arrive as her",b:"Walk in as the person you would like to be, before you feel like her.",q:"Who did you walk in as?",xp:15},
+  {d:"friendships",s:"Habits",t:"Follow up in two days",b:"After seeing someone, send the thing you said you would send.",q:"What did you send, and how long had you been meaning to?",xp:10},
+  {d:"friendships",s:"Mindset",t:"Your life is the invitation",b:"Do the thing you would do alone anyway, and leave the door open.",q:"What did you do, and who came?",xp:20},
+  {d:"dating",s:"Courage",t:"Make the ask",b:"Ask someone out, plainly, without softening it into something deniable.",q:"What did you say? Word for word, if you remember.",xp:30},
+  {d:"dating",s:"Courage",t:"The unsoftened sentence",b:"Say the true thing you would normally file down before letting it out.",q:"What was the sentence, before you would have filed it?",xp:25},
+  {d:"dating",s:"Courage",t:"Take the no",b:"Get turned down, and log it here. This pays more than a smooth yes. That is the point.",q:"How did it land? Not how you think it should have landed.",xp:40},
+  {d:"dating",s:"Initiation",t:"First move",b:"Message first. Say something only you would say.",q:"What did you open with?",xp:15},
+  {d:"dating",s:"Presence",t:"One second longer",b:"Hold eye contact past the point where you would usually look away.",q:"What happened in the extra second?",xp:10},
+  {d:"dating",s:"Clarity",t:"Name what you want",b:"Write down, for yourself only, what you are actually looking for this year.",q:"What did you write down?",xp:15},
+  {d:"dating",s:"Clarity",t:"Leave early",b:"If it is not right, end it kindly and go home. Leaving well is a skill.",q:"How did you end it, and what was the walk home like?",xp:25},
+  {d:"reading",s:"Keeping",t:"Pull one line",b:"Copy out a sentence worth keeping. By hand, if you can.",q:"What caught you about it?",xp:10},
+  {d:"reading",s:"Metabolising",t:"Tell someone",b:"Explain what you are reading to a person who is not reading it.",q:"Who, and where did you get stuck explaining it?",xp:25},
+  {d:"reading",s:"Range",t:"Older than you",b:"Read something written before you were born. Anything.",q:"What was it, and what felt foreign?",xp:20},
+  {d:"reading",s:"Finishing",t:"The abandoned one",b:"Return to the book you left at page sixty. Give it thirty more.",q:"Why did you leave it the first time?",xp:30},
+  {d:"reading",s:"Metabolising",t:"Argue with it",b:"Find the thing you disagree with and write the objection down.",q:"What is your objection?",xp:20},
+  {d:"reading",s:"Attention",t:"Thirty minutes, no screen",b:"Paper only. Phone in another room. Timer if you need one.",q:"Where were you, and what did you notice?",xp:15},
+  {d:"reading",s:"Range",t:"Follow the footnote",b:"Chase one reference out of one book and into another.",q:"Where did it take you?",xp:20},
+  {d:"reading",s:"Retrieval",t:"Close the book first",b:"Write down what you remember before you look. The looking is not the learning.",q:"What could you not remember?",xp:20},
+  {d:"reading",s:"Spacing",t:"Yesterday's deck",b:"Do the review that is due, not the new material that is tempting.",q:"What had gone, that you thought was solid?",xp:20},
+  {d:"reading",s:"Drilling",t:"The one you keep getting wrong",b:"Find the error you repeat. Drill only that, ten minutes, nothing else.",q:"What is the error, and what does it cost you?",xp:25},
+  {d:"reading",s:"Speaking",t:"Before you are ready",b:"Use the language with a person today. Mistakes included, mistakes expected.",q:"What did you fail to say?",xp:30},
+  {d:"reading",s:"Memory",t:"Name the room",b:"Go through one room naming everything in the other language. Look up what you cannot say.",q:"Which thing had no name?",xp:15},
+  {d:"reading",s:"Retrieval",t:"Explain it badly, then better",b:"Explain a rule you half-know, out loud. Notice exactly where you stall.",q:"Where exactly did you stall?",xp:25},
+  {d:"reading",s:"Spacing",t:"Sleep on it",b:"Fifteen minutes of study right before bed. Check it in the morning before anything else.",q:"What survived the night?",xp:20},
+  {d:"reading",s:"Speaking",t:"Ten words, out loud",b:"Say them in a sentence you invented, not the one the book gave you.",q:"Which word would not stay?",xp:15},
+  {d:"housework",s:"The hard one",t:"The drawer",b:"The one you have been avoiding. You know which.",q:"What was in it?",xp:25},
+  {d:"housework",s:"Maintenance",t:"Surfaces clear by dark",b:"Every flat surface empty before you sleep.",q:"What was the last thing you put away?",xp:15},
+  {d:"housework",s:"Maintenance",t:"Ten minutes, timer on",b:"Whatever is worst. Ten minutes only. Stop when it rings.",q:"What did you choose, and did you stop?",xp:10},
+  {d:"housework",s:"Shedding",t:"One thing leaves",b:"Given away, binned, or returned. It does not sleep here tonight.",q:"What went, and how long had it been here?",xp:20},
+  {d:"housework",s:"Care",t:"Wash what is soft",b:"Sheets, towels, the lot. Sleep in it afterwards.",q:"What did the bed feel like?",xp:20},
+  {d:"housework",s:"Care",t:"Feed the plants",b:"All of them. Turn the ones reaching for the window.",q:"Which one is struggling?",xp:10},
+  {d:"housework",s:"Beauty",t:"Make one corner beautiful",b:"Not clean. Beautiful. There is a difference and you know it.",q:"Which corner, and what did you do to it?",xp:25}
+];
+let DECK = EMBEDDED.slice();
+
+const LEVELS=[{at:0,name:"Still Water"},{at:150,name:"First Light"},{at:350,name:"Grasses"},{at:600,name:"The Reeds"},{at:900,name:"The Herons"},{at:1300,name:"Open Field"},{at:1800,name:"Full Morning"}];
+
+// ══ CHAPTER FORMS — the voice stays, the shape rotates ══
+const FORMS=[
+ {k:"plain",   n:"plain",     d:"Two or three short paragraphs of ordinary prose, second person."},
+ {k:"noticed", n:"noticed",   d:"A list of things noticed this week. One short observation per line, each on its own line, no numbering, no bullets, no summarising line at the end."},
+ {k:"letter",  n:"a letter",  d:"A short letter addressed to the week itself. Begin by naming it. Second person throughout, but the week is the addressee."},
+ {k:"objects", n:"the objects",d:"Written about the objects, rooms and materials involved rather than about her. The things are the subject. She appears only where she touched them."},
+ {k:"hours",   n:"in order",  d:"Unbroken prose organised as the order things happened, earliest to latest, without dates or day names unless she gave them."},
+ {k:"single",  n:"one breath",d:"A single unbroken paragraph, no more than ninety words, ending on something physical."}
+];
+
+// ══ STORAGE ADAPTER ═══════════════════════
+const KEY="chronicle:v2";
+const store={
+  hasArtifactStore: !!(window.storage&&window.storage.get&&window.storage.set),
+  async get(k){
+    if(this.hasArtifactStore){ try{const r=await window.storage.get(k);return r&&r.value;}catch(e){return null;} }
+    try{return window.localStorage.getItem(k);}catch(e){return null;}
+  },
+  async set(k,v){
+    if(this.hasArtifactStore){ try{await window.storage.set(k,v);return true;}catch(e){return false;} }
+    try{window.localStorage.setItem(k,v);return true;}catch(e){return false;}
+  }
+};
+
+// ══ STATE ═════════════════════════════════
+const FRESH=()=>({v:2,week:1,dealt:false,focus:"friendships",
+  mix:{friendships:5,dating:3,reading:4,housework:4},
+  pool:[],hand:[],keepsakes:[],chapters:[],myCards:[],
+  xp:{friendships:0,dating:0,reading:0,housework:0},
+  stamp:0,lastNudge:""});
+let S=FRESH(), pending=null, pushTimer=null;
+
+function migrate(o){
+  if(!o) return FRESH();
+  if(!o.v){ // v1: no version field, no myCards, chapters may carry an "untrue" flag
+    o.v=2; o.myCards=o.myCards||[]; o.gh={token:"",gist:""}; o.stamp=Date.now(); o.lastNudge="";
+    (o.chapters||[]).forEach(c=>{ if(c.untrue){ c.note=(c.note?c.note+" ":"")+"(marked not true before this was editable)"; delete c.untrue; } });
+  }
+  return Object.assign(FRESH(),o);
+}
+
+async function save(){ S.stamp=Date.now(); await store.set(KEY,JSON.stringify(S)); queuePush(); }
+async function load(){
+  const raw=await store.get(KEY);
+  if(raw){ try{ S=migrate(JSON.parse(raw)); }catch(e){ S=FRESH(); } }
+}
+
+// ══ HELPERS ═══════════════════════════════
+const $=id=>document.getElementById(id);
+const totalXp=()=>DKEYS.reduce((n,k)=>n+S.xp[k],0);
+const roman=n=>["Zero","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Eleven","Twelve"][n]||n;
+const esc=s=>String(s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[m]));
+function dayOf(k){
+  if(!k.at) return "week "+k.week;
+  return new Date(k.at).toLocaleDateString("en-GB",{day:"numeric",month:"short"});
+}
+const allCards=()=>DECK.concat(S.myCards.map(c=>Object.assign({mine:true},c)));
+
+function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("show"),3200);}
+const EVEN={label:"An even week",colour:"#9AB0A4",glyph:"◐"};
+const FOCUS=()=>(S.focus&&DOMAINS[S.focus])?DOMAINS[S.focus]:EVEN;
+function applyAccent(){document.documentElement.style.setProperty("--accent",FOCUS().colour);}
+function confetti(cx,cy,cols){
+  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  for(let i=0;i<34;i++)setTimeout(()=>{
+    const el=document.createElement("div"),sz=5+Math.random()*7;
+    el.style.cssText="position:fixed;width:"+sz+"px;height:"+sz+"px;background:"+cols[Math.floor(Math.random()*cols.length)]+";border-radius:"+(Math.random()>.4?"50%":"2px")+";left:"+cx+"px;top:"+cy+"px;pointer-events:none;z-index:9999;";
+    document.body.appendChild(el);
+    const a=Math.random()*Math.PI*2,v=80+Math.random()*140;let vx=Math.cos(a)*v,vy=Math.sin(a)*v-110,px=cx,py=cy,f=0;
+    const run=()=>{vy+=4;px+=vx*.016;py+=vy*.016;el.style.left=px+"px";el.style.top=py+"px";el.style.opacity=Math.max(0,1-f/62);el.style.transform="rotate("+(f*7)+"deg)";if(++f<62)requestAnimationFrame(run);else el.remove();};
+    requestAnimationFrame(run);
+  },i*14);
+}
+
+// ══ DECK LOADING ══════════════════════════
+async function loadDeck(){
+  try{
+    const r=await fetch("cards.json",{cache:"no-cache"});
+    if(!r.ok) throw 0;
+    const j=await r.json();
+    if(Array.isArray(j.cards)){
+      const good=j.cards.filter(c=>c&&DOMAINS[c.d]&&c.t&&c.b);
+      const bad=j.cards.length-good.length;
+      if(good.length) DECK=good.map(c=>({d:c.d,s:c.s||"Yours",t:c.t,b:c.b,q:c.q||"What happened?",xp:Math.max(5,Math.min(60,parseInt(c.xp,10)||20))}));
+      if(bad) setTimeout(()=>toast(bad+(bad===1?" card in cards.json was skipped":" cards in cards.json were skipped")+" — check d, t and b."),900);
+    }
+  }catch(e){ /* embedded fallback */ }
+}
+
+// ══ RENDER ════════════════════════════════
+function renderStatus(){
+  const tot=totalXp();let idx=0;
+  LEVELS.forEach((l,i)=>{if(tot>=l.at)idx=i;});
+  const nxt=LEVELS[idx+1];
+  $("levelName").textContent=LEVELS[idx].name;
+  $("levelXp").textContent=tot+" XP  ·  "+(nxt?(nxt.at-tot)+" to "+nxt.name:"the whole morning");
+  const peak=Math.max(100,...DKEYS.map(k=>S.xp[k]));
+  $("tracks").innerHTML=DKEYS.map(k=>{const d=DOMAINS[k];
+    return '<div class="track" style="--tc:'+d.colour+'"><div class="track-lab"><span>'+d.glyph+' '+d.label+'</span><b>'+S.xp[k]+'</b></div><div class="bar"><i style="width:'+Math.round(S.xp[k]/peak*100)+'%"></i></div></div>';}).join("");
+  $("weekmark").textContent=String(S.week).padStart(2,"0");
+  $("eyebrow").textContent="Chapter "+roman(S.week);
+}
+
+function renderBuild(){
+  const all=allCards();
+  $("deckSize").textContent=all.length+" cards · "+S.myCards.length+" yours";
+  $("sliders").innerHTML=DKEYS.map(k=>{const d=DOMAINS[k],max=Math.min(8,all.filter(c=>c.d===k).length)||0;
+    if(S.mix[k]>max)S.mix[k]=max;
+    return '<div class="slider-row" style="--sc:'+d.colour+'"><label for="sl-'+k+'"><span>'+d.glyph+' '+d.label+'</span><b id="v-'+k+'">'+S.mix[k]+'</b></label><input type="range" id="sl-'+k+'" min="0" max="'+max+'" value="'+S.mix[k]+'" data-k="'+k+'"></div>';}).join("");
+  $("sliders").querySelectorAll("input").forEach(i=>i.addEventListener("input",e=>{
+    S.mix[e.target.dataset.k]=+e.target.value;$("v-"+e.target.dataset.k).textContent=e.target.value;
+    S.focus=computeFocus();applyAccent();renderFocusLine();
+  }));
+  S.focus=computeFocus();applyAccent();renderFocusLine();
+}
+
+// The lean is not a second decision. It is whichever dial you pushed highest.
+function computeFocus(){
+  let best=null,top=-1,tied=false;
+  DKEYS.forEach(k=>{ if(S.mix[k]>top){top=S.mix[k];best=k;tied=false;} else if(S.mix[k]===top){tied=true;} });
+  return (tied||top<=0)?null:best;
+}
+function renderFocusLine(){
+  const bn=$("buildNote");
+  if(bn) bn.innerHTML = S.chapters.length
+    ? "Nothing decays while you are away. Come back in three weeks and the deck is still here."
+    : "How it goes: set the dials, deal five cards, and play the ones you actually did. Each card asks you one question afterwards \u2014 your answer is what the chapter gets written from. Close the week whenever you like.";
+  const f=FOCUS();
+  $("focusEffect").innerHTML = S.focus
+    ? 'You have leaned this week towards <b style="color:'+f.colour+'">'+f.label+'</b>. Those cards pay <b>1.5×</b>, two of them are dealt into your opening hand, and the app wears that colour until you close the week.'
+    : 'No single area is highest, so this is <b>an even week</b>. No area pays more than another and the hand is dealt straight. Push one dial above the rest if you want the week to lean.';
+}
+
+function renderHand(){
+  const el=$("hand");
+  if(!S.hand.length){
+    el.innerHTML='<div class="empty" style="grid-column:1/-1"><span class="glyph">'+FOCUS().glyph+'</span><p>The hand is empty and the week is not over.<br>That is allowed. Close it when you are ready.</p></div>';
+  }else{
+    el.innerHTML=S.hand.map((c,i)=>{const d=DOMAINS[c.d],tilt=(i%2===0?-0.7:0.7)*(1+(i%3)*0.35),boost=!!S.focus&&c.d===S.focus;
+      return '<article class="card" style="--dc:'+d.colour+';--tilt:'+tilt+'deg;animation-delay:'+(i*95)+'ms">'
+      +(c.mine?'<span class="mine">yours</span>':'')
+      +'<div class="card-suit">'+esc(d.label)+' · '+esc(c.s)+'</div><h3 class="card-title">'+esc(c.t)+'</h3><p class="card-body">'+esc(c.b)+'</p>'
+      +'<div class="card-foot"><span class="card-xp">'+(boost?'<b class="boost">×1.5</b>'+Math.round(c.xp*1.5)+' XP':c.xp+' XP')+'</span>'
+      +'<span class="card-acts"><button class="btn mini" data-play="'+i+'">Played it</button><button class="drop" data-drop="'+i+'">Pass</button></span></div></article>';}).join("");
+    requestAnimationFrame(()=>el.querySelectorAll(".card").forEach(c=>c.classList.add("in")));
+    el.querySelectorAll("[data-play]").forEach(b=>b.addEventListener("click",()=>openModal(+b.dataset.play)));
+    el.querySelectorAll("[data-drop]").forEach(b=>b.addEventListener("click",()=>passCard(+b.dataset.drop)));
+  }
+  $("poolCount").textContent=S.pool.length+" left in the deck";
+}
+
+function renderKeepsakes(){
+  $("keepSec").classList.toggle("hide",!S.keepsakes.length);
+  $("keepCount").textContent=S.keepsakes.length+" kept";
+  $("shelf").innerHTML=S.keepsakes.slice().reverse().map(k=>{const d=DOMAINS[k.d]||{colour:"#9AB0A4",glyph:"\u25d0",label:"Elsewhere"};
+    return '<div class="keep" style="--kc:'+d.colour+'"><h4>'+esc(k.t)+'</h4>'+(k.q?'<span class="qq">'+esc(k.q)+'</span>':'')+'<p>'+esc(k.line)+'</p><span class="stamp">'+d.glyph+' '+esc(d.label)+' · '+dayOf(k)+'</span></div>';}).join("");
+}
+
+function renderChapters(){
+  $("chapSec").classList.toggle("hide",!S.chapters.length&&!$("nudgeSlot").innerHTML);
+  $("chapCount").textContent=S.chapters.length+(S.chapters.length===1?" chapter":" chapters");
+  $("chapters").innerHTML=S.chapters.map((c,idx)=>({c,idx})).reverse().map(({c,idx})=>{
+    const paras=c.text.split(/\n+/).filter(Boolean).map(p=>"<p>"+esc(p)+"</p>").join("");
+    return '<article class="chapter'+(c.thin?" fragment":"")+'">'
+    +'<span class="ch-num">Chapter '+roman(c.week)+' · '+c.cards+(c.cards===1?' card':' cards')+(c.form?' · '+esc(c.form):'')+(c.edited?' · edited by you':'')+'</span>'
+    +'<div class="ch-text" id="cht-'+idx+'">'+paras+'</div>'
+    +(c.note?'<aside class="ch-note"><span class="ch-note-lab">In your hand</span><p>'+esc(c.note)+'</p></aside>':'')
+    +'<div class="ch-note-editor hide" id="cne-'+idx+'"><textarea id="cnt-'+idx+'" placeholder="What it missed, or what you want to say back."></textarea>'
+    +'<div class="ch-note-acts"><button class="inkbtn" data-notesave="'+idx+'">Save note</button><button class="inkbtn" data-notecancel="'+idx+'">Cancel</button></div></div>'
+    +'<div class="ch-foot"><span>'+(c.thin?"A THIN WEEK, WRITTEN THIN":"WRITTEN FROM YOUR OWN WORDS")+'</span><span class="ch-acts">'
+    +'<button class="inkbtn" data-edit="'+idx+'">Edit the prose</button><button class="inkbtn" data-note="'+idx+'">'+(c.note?"Change your note":"Add a note")+'</button></span></div></article>';
+  }).join("");
+
+  $("chapters").querySelectorAll("[data-edit]").forEach(b=>b.addEventListener("click",async()=>{
+    const i=+b.dataset.edit,box=$("cht-"+i);
+    if(box.classList.contains("editing")){
+      box.contentEditable="false";box.setAttribute("contenteditable","false");box.classList.remove("editing");
+      const txt=box.innerText.trim();
+      if(txt&&txt!==S.chapters[i].text){S.chapters[i].text=txt;S.chapters[i].edited=true;await save();toast("Saved. It is your record before it is anyone's.");}
+      renderChapters();
+    }else{box.contentEditable="true";box.setAttribute("contenteditable","true");box.classList.add("editing");box.focus();b.textContent="Save the prose";toast("Rewrite freely. Cut what is not true.");}
+  }));
+  $("chapters").querySelectorAll("[data-note]").forEach(b=>b.addEventListener("click",()=>{
+    const i=+b.dataset.note;$("cne-"+i).classList.remove("hide");const ta=$("cnt-"+i);ta.value=S.chapters[i].note||"";ta.focus();}));
+  $("chapters").querySelectorAll("[data-notesave]").forEach(b=>b.addEventListener("click",async()=>{
+    const i=+b.dataset.notesave;S.chapters[i].note=$("cnt-"+i).value.trim();await save();renderChapters();toast("Noted, in the margin, in your hand.");}));
+  $("chapters").querySelectorAll("[data-notecancel]").forEach(b=>b.addEventListener("click",()=>$("cne-"+(+b.dataset.notecancel)).classList.add("hide")));
+}
+
+function renderAll(){renderStatus();renderKeepsakes();renderChapters();if(S.dealt)renderHand();}
+
+// ══ PLAY ══════════════════════════════════
+function dealWeek(){
+  const all=allCards();let pool=[];
+  DKEYS.forEach(k=>{const of=all.filter(c=>c.d===k).slice().sort(()=>Math.random()-.5);pool=pool.concat(of.slice(0,S.mix[k]));});
+  if(!pool.length){toast("An empty deck is a decision, but not a playable one.");return;}
+  pool.sort(()=>Math.random()-.5);
+  S.focus=computeFocus();applyAccent();
+  const hand=[];
+  if(S.focus){for(let i=pool.length-1;i>=0&&hand.length<2;i--){if(pool[i].d===S.focus)hand.push(pool.splice(i,1)[0]);}}
+  while(hand.length<5&&pool.length)hand.push(pool.shift());
+  hand.sort(()=>Math.random()-.5);
+  S.hand=hand;S.pool=pool;S.dealt=true;
+  $("buildSec").classList.add("hide");$("handSec").classList.remove("hide");
+  $("nudgeSlot").innerHTML="";
+  renderHand();save();
+  $("handSec").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function drawUp(){while(S.hand.length<5&&S.pool.length)S.hand.push(S.pool.shift());}
+
+function openModal(i){
+  pending=i;const c=S.hand[i],d=DOMAINS[c.d];
+  $("modal").style.setProperty("--mc",d.colour);
+  $("mTitle").textContent=c.t;
+  $("mPrompt").textContent=c.q||"What actually happened?";
+  $("mLine").value="";$("mCount").textContent="0";
+  $("scrim").classList.add("open");setTimeout(()=>$("mLine").focus(),120);
+}
+function closeModal(){$("scrim").classList.remove("open");pending=null;}
+
+async function keepIt(){
+  if(pending===null)return;
+  const line=$("mLine").value.trim();
+  if(!line){$("mLine").focus();toast("The card needs a line. That is the whole trade.");return;}
+  const c=S.hand[pending],d=DOMAINS[c.d],gain=Math.round(c.xp*((S.focus&&c.d===S.focus)?1.5:1));
+  if(S.xp[c.d]===undefined)S.xp[c.d]=0;
+  S.xp[c.d]+=gain;
+  S.keepsakes.push({d:c.d,t:c.t,q:c.q||"",line,week:S.week,at:Date.now()});
+  S.hand.splice(pending,1);drawUp();closeModal();await save();renderAll();
+  const r=$("keepSec").getBoundingClientRect();
+  confetti(window.innerWidth/2,Math.max(120,r.top),[d.colour,"#EBB54D","#F2EDE0","#8FB89B"]);
+  const n=S.keepsakes.filter(k=>k.week===S.week).length;
+  toast(n===3?"Three kept. The chapter has a shape now.":"+"+gain+" XP · kept");
+}
+async function passCard(i){
+  S.pool.push(S.hand[i]);S.hand.splice(i,1);drawUp();await save();renderHand();
+  toast("Passed. Declining is a move, not a failure.");
+}
+
+// ══ THE CHRONICLER ════════════════════════
+function pickForm(week){ return FORMS[(week-1)%FORMS.length]; }
+
+function buildPrompt(thisWeek, thin){
+  const form=pickForm(S.week);
+  const memory=S.chapters.slice(-3);
+  const evidence=thisWeek.map(k=>"- ["+DOMAINS[k.d].label+"] "+k.t+"\n  asked: "+(k.q||"what happened?")+"\n  she wrote: \u201C"+k.line+"\u201D").join("\n");
+  const lines=[
+    "You are the chronicler of one woman's week. You write English prose in the register of Mary Oliver: plain words, short sentences, close attention to small physical things, unhurried, warm without sentimentality. You notice. You do not console.",
+    "",
+    "Hard rules:",
+    "- You are a chronicler, not a coach. Never advise, instruct, encourage, congratulate or predict. Never tell her what to do next or who she is becoming.",
+    "- Write only from the evidence below. Invent no events, no weather, no people who are not there.",
+    "- You may use her own words back to her.",
+    "- Never mention points, levels, cards, weeks-as-a-game, or the app itself.",
+    "- Do not reproduce or quote any published poem or text.",
+    "- British English. Second person.",
+    ""
+  ];
+  if(thin){
+    lines.push("This week was thin. She played "+thisWeek.length+(thisWeek.length===1?" card":" cards")+". Write a fragment of no more than fifty words. One or two sentences. Do not inflate it, do not soften it, do not reach for meaning that is not in the evidence. A short true thing is what is wanted.");
+  }else{
+    lines.push("The form for this chapter is "+form.k.toUpperCase()+": "+form.d);
+    lines.push("Length: 120 to 200 words. No headings, no greeting, no sign-off.");
+  }
+  if(memory.length){
+    lines.push("","You have written for her before. Here are your last "+memory.length+" chapters. Do not reuse their images, their sentence openings, their closing moves, or their nouns where you can avoid it. Find different things to notice.","");
+    memory.forEach((c,i)=>lines.push("--- earlier chapter "+(i+1)+" ---\n"+c.text));
+  }
+  lines.push("","The evidence, week "+S.week+":",evidence);
+  lines.push("","(Write the chapter and nothing else. If I tell you it is wrong, write it again rather than defending it.)");
+  return {prompt:lines.join("\n"),form};
+}
+
+function weekCards(){return S.keepsakes.filter(k=>k.week===S.week);}
+
+function openClose(){
+  const tw=weekCards();
+  if(!tw.length){toast("Nothing to write from yet. Play a card first.");return;}
+  const thin=tw.length<3;
+  $("closeSummary").textContent=thin
+    ? tw.length+(tw.length===1?" card":" cards")+" played. This will come back as a fragment, and that is the honest shape for it."
+    : tw.length+" cards played. The form this week is "+pickForm(S.week).n+".";
+  $("pasteBox").value="";
+  $("closeScrim").classList.add("open");
+}
+
+async function copyWeek(){
+  const tw=weekCards();
+  const {prompt}=buildPrompt(tw,tw.length<3);
+  try{
+    await navigator.clipboard.writeText(prompt);
+    toast("Copied. Paste it into Claude, then bring the chapter back.");
+  }catch(e){
+    const ta=document.createElement("textarea");
+    ta.value=prompt;ta.setAttribute("readonly","");
+    ta.style.cssText="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:80vw;height:50vh;z-index:99;";
+    document.body.appendChild(ta);ta.select();
+    let done=false;
+    try{done=document.execCommand("copy");}catch(err){}
+    if(done){ta.remove();toast("Copied. Paste it into Claude, then bring the chapter back.");}
+    else{toast("Select all of that and copy it by hand, then tap anywhere.");
+      const kill=()=>{ta.remove();document.removeEventListener("click",kill);};
+      setTimeout(()=>document.addEventListener("click",kill),400);}
+  }
+}
+
+async function commitChapter(text,thin,formName){
+  const tw=weekCards();
+  S.chapters.push({week:S.week,text:text.trim(),cards:tw.length,form:formName,thin});
+  S.week+=1;S.dealt=false;S.hand=[];S.pool=[];
+  $("closeScrim").classList.remove("open");
+  $("handSec").classList.add("hide");$("buildSec").classList.remove("hide");
+  $("chapSec").classList.remove("hide");
+  await save();renderAll();renderBuild();showNudge();
+  $("chapSec").scrollIntoView({behavior:"smooth",block:"start"});
+  confetti(window.innerWidth/2,200,["#EBB54D","#F2EDE0","#8FB89B","#A493D1"]);
+}
+
+async function pasteSave(){
+  const text=$("pasteBox").value.trim();
+  if(text.length<20){toast("That is too short to be a chapter.");return;}
+  const tw=weekCards(),thin=tw.length<3;
+  await commitChapter(text,thin,thin?"a fragment":pickForm(S.week).n);
+  toast("Kept. Chapter "+roman(S.chapters[S.chapters.length-1].week)+".");
+}
+
+
+// ══ THE NUDGE — an invitation, never a proposal ══
+function showNudge(){
+  const mine=S.myCards.length,total=allCards().length;
+  const lines=[
+    "The deck gave you a week and got nothing back. Write one card into it.",
+    "Something happened this week that is not in the deck. Put it there.",
+    "The deck is only as good as the last card you wrote for it.",
+    "You have played this deck "+S.chapters.length+(S.chapters.length===1?" week":" weeks")+" now. Add something it does not yet ask of you."
+  ];
+  $("nudgeSlot").innerHTML='<div class="nudge"><h3>'+(mine?"The deck stands at "+total+" cards, "+mine+" of them yours.":"The deck is entirely mine so far.")
+    +'</h3><p>'+lines[S.chapters.length%lines.length]+'</p><div class="btn-row"><button class="btn mini" id="nudgeAdd">Write a card</button><button class="btn ghost mini" id="nudgeSkip">Not this week</button></div></div>';
+  $("nudgeAdd").addEventListener("click",openComposer);
+  $("nudgeSkip").addEventListener("click",()=>{$("nudgeSlot").innerHTML="";});
+}
+
+function openComposer(){
+  $("cD").innerHTML=DKEYS.map(k=>'<option value="'+k+'">'+DOMAINS[k].glyph+' '+DOMAINS[k].label+'</option>').join("");
+  $("cD").value=S.focus||DKEYS[0];
+  ["cS","cT","cB","cQ"].forEach(i=>$(i).value="");$("cX").value="20";
+  $("cardScrim").classList.add("open");setTimeout(()=>$("cT").focus(),120);
+}
+async function saveCard(){
+  const c={d:$("cD").value,s:$("cS").value.trim()||"Yours",t:$("cT").value.trim(),b:$("cB").value.trim(),q:$("cQ").value.trim()||"What happened?",xp:Math.max(5,Math.min(60,parseInt($("cX").value,10)||20))};
+  if(!c.t||!c.b){toast("A card needs a title and a line to act on.");return;}
+  S.myCards.push(c);await save();
+  $("cardScrim").classList.remove("open");
+  renderBuild();$("nudgeSlot").innerHTML="";
+  toast("Added. It is in the deck from the next deal.");
+}
+
+// ══ EXPORT / IMPORT ═══════════════════════
+function exportRecord(){
+  const blob=new Blob([JSON.stringify(S,null,2)],{type:"application/json"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="chronicle-week-"+S.week+"-"+new Date().toISOString().slice(0,10)+".json";
+  a.click();URL.revokeObjectURL(a.href);
+  toast("Exported. Keep it somewhere that is not this device.");
+}
+function exportChapters(){
+  if(!S.chapters.length){toast("No chapters yet. There is nothing to read.");return;}
+  const L=[];
+  L.push("# The Chronicle");
+  L.push("");
+  L.push("Chapters one to "+roman(S.chapters.length).toLowerCase()+", "+S.keepsakes.length+" keepsakes kept.");
+  L.push("Exported "+new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"})+".");
+  L.push("");
+  S.chapters.forEach(c=>{
+    const kept=S.keepsakes.filter(k=>k.week===c.week);
+    L.push("---");L.push("");
+    L.push("## Chapter "+roman(c.week));
+    L.push("");
+    L.push("*"+(c.form||"plain")+" \u00b7 "+c.cards+(c.cards===1?" card":" cards")+(c.edited?" \u00b7 edited":"")+"*");
+    L.push("");
+    c.text.split(/\n+/).filter(Boolean).forEach(p=>{L.push(p);L.push("");});
+    if(c.note){L.push("> **In your hand.** "+c.note);L.push("");}
+    if(kept.length){
+      L.push("### Kept");L.push("");
+      kept.forEach(k=>L.push("- **"+k.t+"** \u2014 "+DOMAINS[k.d].label.toLowerCase()+(k.at?", "+new Date(k.at).toLocaleDateString("en-GB",{day:"numeric",month:"long"}):"")+(k.q?" \u2014 *"+k.q+"*":"")+"  \n  "+k.line));
+      L.push("");
+    }
+  });
+  const open=S.keepsakes.filter(k=>k.week===S.week);
+  if(open.length){
+    L.push("---");L.push("");L.push("## Week "+S.week+", still open");L.push("");
+    open.forEach(k=>L.push("- **"+k.t+"**  \n  "+k.line));
+    L.push("");
+  }
+  L.push("---");L.push("");L.push("*Class of Coffee \u2014 with AI assistance*");
+  const blob=new Blob([L.join("\n")],{type:"text/markdown"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="the-chronicle-chapters-"+new Date().toISOString().slice(0,10)+".md";
+  a.click();URL.revokeObjectURL(a.href);
+  toast(S.chapters.length+(S.chapters.length===1?" chapter":" chapters")+" written out.");
+}
+
+function importRecord(file){
+  const fr=new FileReader();
+  fr.onload=async()=>{
+    try{
+      const inc=migrate(JSON.parse(fr.result));
+      if(!confirm("Replace everything on this device with "+ (inc.chapters||[]).length +" chapters and "+(inc.keepsakes||[]).length+" keepsakes?"))return;
+      S=inc;await save();applyAccent();renderBuild();renderAll();
+      $("buildSec").classList.toggle("hide",S.dealt);$("handSec").classList.toggle("hide",!S.dealt);
+      $("setScrim").classList.remove("open");
+      toast("Restored. Week "+S.week+".");
+    }catch(e){toast("That file could not be read.");}
+  };
+  fr.readAsText(file);
+}
+
+// ══ MEMORY — one token, the gist finds itself ══
+const TOKEN_KEY="chronicle:token", GIST_KEY="chronicle:gist", LAST_KEY="chronicle:lastsync";
+const GIST_FILE="chronicle_record.json";
+const GIST_DESC="The Chronicle \u2014 private record";
+
+const Sync={
+  token:"", gist:"", last:"", busy:false,
+  async init(){
+    this.token=await store.get(TOKEN_KEY)||"";
+    this.gist=await store.get(GIST_KEY)||"";
+    this.last=await store.get(LAST_KEY)||"";
+  },
+  on(){return !!this.token;},
+  headers(){return {"Authorization":"Bearer "+this.token,"Accept":"application/vnd.github+json","Content-Type":"application/json","X-GitHub-Api-Version":"2022-11-28"};},
+
+  // The whole point: never ask her for an id. Find the gist by its filename.
+  async findGist(){
+    const r=await fetch("https://api.github.com/gists?per_page=100",{headers:this.headers()});
+    if(!r.ok)throw new Error("GitHub "+r.status);
+    const list=await r.json();
+    const hit=list.find(g=>g.files&&g.files[GIST_FILE]);
+    return hit?hit.id:"";
+  },
+  async createGist(){
+    const body={description:GIST_DESC,public:false,files:{[GIST_FILE]:{content:JSON.stringify(scrub(S),null,2)}}};
+    const r=await fetch("https://api.github.com/gists",{method:"POST",headers:this.headers(),body:JSON.stringify(body)});
+    if(!r.ok)throw new Error("GitHub "+r.status);
+    return (await r.json()).id;
+  },
+  async resolve(){
+    if(this.gist)return this.gist;
+    let id=await this.findGist();
+    if(!id)id=await this.createGist();
+    this.gist=id;await store.set(GIST_KEY,id);
+    return id;
+  },
+  async stampNow(){
+    this.last=new Date().toLocaleString("en-GB",{weekday:"short",hour:"2-digit",minute:"2-digit"});
+    await store.set(LAST_KEY,this.last);
+  },
+
+  async push(quiet){
+    if(!this.on())return false;
+    this.setBusy(true);
+    try{
+      const id=await this.resolve();
+      const body={description:GIST_DESC,files:{[GIST_FILE]:{content:JSON.stringify(scrub(S),null,2)}}};
+      const r=await fetch("https://api.github.com/gists/"+id,{method:"PATCH",headers:this.headers(),body:JSON.stringify(body)});
+      if(!r.ok)throw new Error("GitHub "+r.status);
+      await this.stampNow();renderSyncUI();
+      if(!quiet)toast("Saved to your gist.");
+      return true;
+    }catch(e){
+      if(!quiet)toast("Could not save up: "+e.message+". Check the token has gist scope.");
+      return false;
+    }finally{this.setBusy(false);}
+  },
+
+  async pull(quiet){
+    if(!this.on())return false;
+    this.setBusy(true);
+    try{
+      const id=await this.resolve();
+      const r=await fetch("https://api.github.com/gists/"+id,{headers:this.headers()});
+      if(!r.ok)throw new Error("GitHub "+r.status);
+      const j=await r.json();
+      const f=j.files&&j.files[GIST_FILE];
+      if(!f)throw new Error("nothing stored yet");
+      const raw=f.truncated&&f.raw_url?await (await fetch(f.raw_url)).text():f.content;
+      const inc=migrate(JSON.parse(raw));
+      if((inc.stamp||0)<=(S.stamp||0)){
+        await this.stampNow();renderSyncUI();
+        if(!quiet)toast("This device already holds the newer copy.");
+        return false;
+      }
+      S=inc;await store.set(KEY,JSON.stringify(S));
+      await this.stampNow();
+      applyAccent();renderBuild();renderAll();renderSyncUI();
+      $("buildSec").classList.toggle("hide",S.dealt);$("handSec").classList.toggle("hide",!S.dealt);
+      if(!quiet)toast("Picked up where you left off. Week "+S.week+".");
+      return true;
+    }catch(e){
+      if(!quiet)toast("Could not read your gist: "+e.message);
+      return false;
+    }finally{this.setBusy(false);}
+  },
+
+  async connect(tok){
+    this.token=tok.trim();
+    if(!this.token){toast("Paste a token first.");return;}
+    await store.set(TOKEN_KEY,this.token);
+    this.setBusy(true);
+    try{
+      const id=await this.findGist();
+      if(id){ this.gist=id; await store.set(GIST_KEY,id); this.setBusy(false); await this.pull(false); }
+      else { this.setBusy(false); await this.push(false); toast("Connected. A private gist was created for you."); }
+    }catch(e){
+      this.setBusy(false);
+      const auth=/40[13]/.test(e.message);
+      if(auth){ this.token="";await store.set(TOKEN_KEY,""); toast("That token was refused. It needs the gist scope, and nothing else."); }
+      else { toast("Could not reach GitHub. The token is kept — try again when you are online."); }
+    }
+    renderSyncUI();
+  },
+  async disconnect(){
+    this.token="";this.gist="";this.last="";
+    await store.set(TOKEN_KEY,"");await store.set(GIST_KEY,"");await store.set(LAST_KEY,"");
+    renderSyncUI();toast("Disconnected. Your record stays on this device.");
+  },
+  setBusy(b){this.busy=b;const el=$("syncBtn");if(el)el.classList.toggle("busy",b);}
+};
+
+// the token never travels inside the record
+function scrub(o){const c=JSON.parse(JSON.stringify(o));delete c.gh;return c;}
+
+function renderSyncUI(){
+  const b=$("syncBtn");
+  if(b){b.classList.toggle("on",Sync.on());b.title=Sync.on()?("Synced "+(Sync.last||"just now")):"Not syncing \u2014 this device only";}
+  const st=$("syncStatus");
+  if(st){
+    st.innerHTML=Sync.on()
+      ? "Connected. Last sync <b>"+(Sync.last||"just now")+"</b>."+(Sync.gist?" Gist <code>"+Sync.gist.slice(0,7)+"</code>.":"")
+      : "Not connected. This record lives on this device only.";
+  }
+}
+
+function queuePush(){
+  if(!Sync.on())return;
+  clearTimeout(pushTimer);
+  pushTimer=setTimeout(()=>Sync.push(true),4000);
+}
+
+// ══ SUNDAY ════════════════════════════════
+function todayKey(){return new Date().toISOString().slice(0,10);}
+function sundayNudge(){
+  const d=new Date();
+  if(d.getDay()!==0)return;
+  if(S.lastNudge===todayKey())return;
+  const played=S.keepsakes.filter(k=>k.week===S.week).length;
+  $("banners").innerHTML='<div class="banner"><p>'+(played?"It is Sunday. "+played+(played===1?" card":" cards")+" played. Close the week when you are ready.":"It is Sunday. The week is open and unwritten.")
+    +'</p><button class="btn mini" id="bannerGo">'+(played?"Close the week":"Build the week")+'</button></div>';
+  S.lastNudge=todayKey();save();
+  $("bannerGo").addEventListener("click",async()=>{
+    $("banners").innerHTML="";
+    (played?$("closeBtn"):$("dealBtn")).scrollIntoView({behavior:"smooth",block:"center"});
+  });
+  if(window.Notification&&Notification.permission==="granted"){
+    try{new Notification("The Chronicle",{body:played?"A week waiting to be closed.":"A new week to build.",icon:"icon-192.png"});}catch(e){}
+  }
+}
+
+// ══ WIRING ════════════════════════════════
+$("dealBtn").addEventListener("click",dealWeek);
+$("closeBtn").addEventListener("click",openClose);
+$("copyWeekBtn").addEventListener("click",copyWeek);
+$("pasteSaveBtn").addEventListener("click",pasteSave);
+$("closeCancel").addEventListener("click",()=>$("closeScrim").classList.remove("open"));
+$("addCardBtn").addEventListener("click",openComposer);
+$("mSave").addEventListener("click",keepIt);
+$("mCancel").addEventListener("click",closeModal);
+$("scrim").addEventListener("click",e=>{if(e.target===$("scrim"))closeModal();});
+$("mLine").addEventListener("input",e=>$("mCount").textContent=e.target.value.length);
+$("cSave").addEventListener("click",saveCard);
+$("cCancel").addEventListener("click",()=>$("cardScrim").classList.remove("open"));
+$("gearBtn").addEventListener("click",()=>{$("ghToken").value=Sync.token||"";renderSyncUI();$("setScrim").classList.add("open");});
+$("setClose").addEventListener("click",()=>$("setScrim").classList.remove("open"));
+$("expBtn").addEventListener("click",exportRecord);
+$("mdBtn").addEventListener("click",exportChapters);
+$("impBtn").addEventListener("click",()=>$("impFile").click());
+$("impFile").addEventListener("change",e=>{if(e.target.files[0])importRecord(e.target.files[0]);});
+$("connectBtn").addEventListener("click",()=>Sync.connect($("ghToken").value));
+$("syncNowBtn").addEventListener("click",async()=>{const got=await Sync.pull(false);if(!got)await Sync.push(false);});
+$("disconnectBtn").addEventListener("click",()=>{if(confirm("Stop syncing on this device? The record stays here."))Sync.disconnect();});
+$("syncBtn").addEventListener("click",async()=>{
+  if(!Sync.on()){$("ghToken").value="";renderSyncUI();$("setScrim").classList.add("open");return;}
+  const got=await Sync.pull(false);if(!got)await Sync.push(false);
+});
+$("notifBtn").addEventListener("click",async()=>{
+  if(!window.Notification){toast("This browser has no notifications.");return;}
+  const p=await Notification.requestPermission();
+  toast(p==="granted"?"Allowed. Sundays only.":"Left off. The banner still appears when you open it.");
+});
+$("resetBtn").addEventListener("click",async()=>{
+  if(!confirm("Clear everything on this device and start at week one?"))return;
+  S=FRESH();await save();
+  $("handSec").classList.add("hide");$("buildSec").classList.remove("hide");$("nudgeSlot").innerHTML="";
+  applyAccent();renderAll();renderBuild();$("setScrim").classList.remove("open");
+  toast("Back to still water.");
+});
+window.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden"&&Sync.on()){clearTimeout(pushTimer);Sync.push(true);}});
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){closeModal();$("setScrim").classList.remove("open");$("cardScrim").classList.remove("open");$("closeScrim").classList.remove("open");}
+  if(e.key==="Enter"&&(e.metaKey||e.ctrlKey)&&$("scrim").classList.contains("open"))keepIt();
+});
+
+(async function init(){
+  await loadDeck();
+  await load();
+  await Sync.init();
+  // one-time move: older records kept the token inside the record itself
+  if(S.gh&&S.gh.token&&!Sync.token){Sync.token=S.gh.token;await store.set(TOKEN_KEY,Sync.token);}
+  delete S.gh;
+  renderSyncUI();
+  if(Sync.on())await Sync.pull(true);
+  applyAccent();renderBuild();renderAll();renderSyncUI();
+  if(S.dealt){$("buildSec").classList.add("hide");$("handSec").classList.remove("hide");renderHand();}
+  sundayNudge();
+  if("serviceWorker" in navigator&&location.protocol!=="blob:"){
+    navigator.serviceWorker.register("sw.js").catch(()=>{});
+  }
+})();
+</script>
+</body>
+</html>

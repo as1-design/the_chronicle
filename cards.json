@@ -1,0 +1,47 @@
+{
+  "_readme": "Edit this file to change the deck. Add, remove or rewrite freely. Fields: d = domain (friendships | dating | reading | housework), s = suit, t = title, b = the card body, q = the question you get asked when you play it, xp = points. The q field is what the chronicler builds the chapter from, so make it ask for something physical and specific.",
+  "version": 1,
+  "cards": [
+    {"d":"friendships","s":"Initiation","t":"Text first, no reason","b":"Message someone with no agenda attached. Not a plan, not a favour. Just contact.","q":"Who, and what did you send?","xp":10},
+    {"d":"friendships","s":"Initiation","t":"Propose a real plan","b":"Not we should catch up. A day, a place, a time, sent to one person.","q":"What did you propose, and what came back?","xp":20},
+    {"d":"friendships","s":"Deepening","t":"The second question","b":"When someone answers, ask the one underneath it. Stay for the answer.","q":"What was the question underneath?","xp":15},
+    {"d":"friendships","s":"Deepening","t":"Say it out loud","b":"Tell someone plainly what you value in them. No hedging, no joke at the end.","q":"What did you tell them? Their words back, if you have them.","xp":25},
+    {"d":"friendships","s":"In the moment","t":"Let the silence sit","b":"Once today, do not rush to fill a pause. See what arrives in it.","q":"What arrived in the pause?","xp":10},
+    {"d":"friendships","s":"Presence","t":"Arrive as her","b":"Walk in as the person you would like to be, before you feel like her.","q":"Who did you walk in as?","xp":15},
+    {"d":"friendships","s":"Habits","t":"Follow up in two days","b":"After seeing someone, send the thing you said you would send.","q":"What did you send, and how long had you been meaning to?","xp":10},
+    {"d":"friendships","s":"Mindset","t":"Your life is the invitation","b":"Do the thing you would do alone anyway, and leave the door open.","q":"What did you do, and who came?","xp":20},
+
+    {"d":"dating","s":"Courage","t":"Make the ask","b":"Ask someone out, plainly, without softening it into something deniable.","q":"What did you say? Word for word, if you remember.","xp":30},
+    {"d":"dating","s":"Courage","t":"The unsoftened sentence","b":"Say the true thing you would normally file down before letting it out.","q":"What was the sentence, before you would have filed it?","xp":25},
+    {"d":"dating","s":"Courage","t":"Take the no","b":"Get turned down, and log it here. This pays more than a smooth yes. That is the point.","q":"How did it land? Not how you think it should have landed.","xp":40},
+    {"d":"dating","s":"Initiation","t":"First move","b":"Message first. Say something only you would say.","q":"What did you open with?","xp":15},
+    {"d":"dating","s":"Presence","t":"One second longer","b":"Hold eye contact past the point where you would usually look away.","q":"What happened in the extra second?","xp":10},
+    {"d":"dating","s":"Clarity","t":"Name what you want","b":"Write down, for yourself only, what you are actually looking for this year.","q":"What did you write down?","xp":15},
+    {"d":"dating","s":"Clarity","t":"Leave early","b":"If it is not right, end it kindly and go home. Leaving well is a skill.","q":"How did you end it, and what was the walk home like?","xp":25},
+
+    {"d":"reading","s":"Keeping","t":"Pull one line","b":"Copy out a sentence worth keeping. By hand, if you can.","q":"What caught you about it?","xp":10},
+    {"d":"reading","s":"Metabolising","t":"Tell someone","b":"Explain what you are reading to a person who is not reading it.","q":"Who, and where did you get stuck explaining it?","xp":25},
+    {"d":"reading","s":"Range","t":"Older than you","b":"Read something written before you were born. Anything.","q":"What was it, and what felt foreign?","xp":20},
+    {"d":"reading","s":"Finishing","t":"The abandoned one","b":"Return to the book you left at page sixty. Give it thirty more.","q":"Why did you leave it the first time?","xp":30},
+    {"d":"reading","s":"Metabolising","t":"Argue with it","b":"Find the thing you disagree with and write the objection down.","q":"What is your objection?","xp":20},
+    {"d":"reading","s":"Attention","t":"Thirty minutes, no screen","b":"Paper only. Phone in another room. Timer if you need one.","q":"Where were you, and what did you notice?","xp":15},
+    {"d":"reading","s":"Range","t":"Follow the footnote","b":"Chase one reference out of one book and into another.","q":"Where did it take you?","xp":20},
+
+    {"d":"reading","s":"Retrieval","t":"Close the book first","b":"Write down what you remember before you look. The looking is not the learning.","q":"What could you not remember?","xp":20},
+    {"d":"reading","s":"Spacing","t":"Yesterday's deck","b":"Do the review that is due, not the new material that is tempting.","q":"What had gone, that you thought was solid?","xp":20},
+    {"d":"reading","s":"Drilling","t":"The one you keep getting wrong","b":"Find the error you repeat. Drill only that, ten minutes, nothing else.","q":"What is the error, and what does it cost you?","xp":25},
+    {"d":"reading","s":"Speaking","t":"Before you are ready","b":"Use the language with a person today. Mistakes included, mistakes expected.","q":"What did you fail to say?","xp":30},
+    {"d":"reading","s":"Memory","t":"Name the room","b":"Go through one room naming everything in the other language. Look up what you cannot say.","q":"Which thing had no name?","xp":15},
+    {"d":"reading","s":"Retrieval","t":"Explain it badly, then better","b":"Explain a rule you half-know, out loud. Notice exactly where you stall.","q":"Where exactly did you stall?","xp":25},
+    {"d":"reading","s":"Spacing","t":"Sleep on it","b":"Fifteen minutes of study right before bed. Check it in the morning before anything else.","q":"What survived the night?","xp":20},
+    {"d":"reading","s":"Speaking","t":"Ten words, out loud","b":"Say them in a sentence you invented, not the one the book gave you.","q":"Which word would not stay?","xp":15},
+
+    {"d":"housework","s":"The hard one","t":"The drawer","b":"The one you have been avoiding. You know which.","q":"What was in it?","xp":25},
+    {"d":"housework","s":"Maintenance","t":"Surfaces clear by dark","b":"Every flat surface empty before you sleep.","q":"What was the last thing you put away?","xp":15},
+    {"d":"housework","s":"Maintenance","t":"Ten minutes, timer on","b":"Whatever is worst. Ten minutes only. Stop when it rings.","q":"What did you choose, and did you stop?","xp":10},
+    {"d":"housework","s":"Shedding","t":"One thing leaves","b":"Given away, binned, or returned. It does not sleep here tonight.","q":"What went, and how long had it been here?","xp":20},
+    {"d":"housework","s":"Care","t":"Wash what is soft","b":"Sheets, towels, the lot. Sleep in it afterwards.","q":"What did the bed feel like?","xp":20},
+    {"d":"housework","s":"Care","t":"Feed the plants","b":"All of them. Turn the ones reaching for the window.","q":"Which one is struggling?","xp":10},
+    {"d":"housework","s":"Beauty","t":"Make one corner beautiful","b":"Not clean. Beautiful. There is a difference and you know it.","q":"Which corner, and what did you do to it?","xp":25}
+  ]
+}
